@@ -3,29 +3,18 @@
 #endif
 
 #include <windows.h>
-
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMSG, WPARAM wParam, LPARAM lParam);
+#include "mainwindow.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLine, int nCmdShow)
 {
-    const wchar_t CLASS_NAME[] = L"Sample Window Class";
+    MainWindow win;
 
-    WNDCLASS wc = {};
-    wc.lpfnWndProc   = WindowProc;
-    wc.hInstance     = hInstance;
-    wc.lpszClassName = CLASS_NAME;
-
-    RegisterClass(&wc);
-
-    HWND hwnd = CreateWindowEx(
-            0, CLASS_NAME, L"Learn to Program Windows", WS_OVERLAPPEDWINDOW, 2000, 10, 800, 600, NULL, NULL, hInstance, NULL);
-
-    if (hwnd == NULL)
+    if (!win.Create(L"Learn to Program Windows", WS_OVERLAPPEDWINDOW))
     {
         return 0;
     }
 
-    ShowWindow(hwnd, nCmdShow);
+    ShowWindow(win.Window(), nCmdShow);
 
     MSG msg;
     while (GetMessage(&msg, NULL, 0,0) > 0)
@@ -35,21 +24,4 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLin
     }
 
     return 0;
-}
-
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-    switch (uMsg)
-    {
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            return 0;
-
-        case WM_PAINT:
-            PAINTSTRUCT ps;
-            BeginPaint(hwnd, &ps);
-            EndPaint(hwnd, &ps);
-            return 0;
-    }
-    return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
