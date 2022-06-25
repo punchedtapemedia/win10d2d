@@ -5,6 +5,7 @@
 #endif
 
 #include <windows.h>
+#include <stdexcept>
 
 template <class DERIVED_TYPE>
 class BaseWindow {
@@ -38,6 +39,10 @@ public:
 
     BaseWindow() = default;
 
+
+    HWND Window() const { return m_hwnd; };
+
+protected:
     BOOL Create(LPCWSTR lpWindowName,
                 DWORD dwStyle,
                 DWORD dwExStyle = 0,
@@ -79,6 +84,7 @@ public:
         if (result == NULL)
         {
             showerror();
+            throw std::runtime_error("Failed to register class");
         }
 
         m_hwnd = CreateWindowEx(
@@ -87,14 +93,9 @@ public:
         if (m_hwnd == NULL)
         {
             showerror();
+            throw std::runtime_error("Failed to register class");
         }
-
-        return (m_hwnd ? TRUE : FALSE);
     }
-
-    HWND Window() const {return m_hwnd; };
-
-protected:
 
     virtual PCWSTR ClassName() const = 0;
     virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) = 0;

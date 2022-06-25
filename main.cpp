@@ -7,13 +7,7 @@
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLine, int nCmdShow)
 {
-    MainWindow win;
-
-    if (!win.Create(L"Learn to Program Windows", WS_OVERLAPPEDWINDOW))
-    {
-        return 0;
-    }
-
+    MainWindow win(L"Learn to Program Windows", WS_OVERLAPPEDWINDOW);
     ShowWindow(win.Window(), nCmdShow);
 
     MSG msg;
